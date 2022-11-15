@@ -1,4 +1,4 @@
-from flask import Flask,render_template , url_for 
+from flask import Flask,render_template , url_for ,flash
 from forms import RegisterForm, LoginForm
 
 
@@ -36,16 +36,22 @@ def home():
 def about():
     return render_template("about.html" , title ="About Page")
 
-@app.route("/register")
+@app.route("/register", methods =["GET","POST"] )
 def register():
     form = RegisterForm()
+    if form.validate_on_submit():
+        flash(f"Account has been created for {form.username.data}","success")
+
     return render_template("register.html" , title ="Register",form= form)
 
 @app.route("/login")
 def login():
     form = LoginForm()
+
     return render_template("login.html" , title ="Login",form= form)
 
 if __name__ == '__main__':
 
     app.run(debug=True)
+
+    
